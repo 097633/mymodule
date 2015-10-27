@@ -14,7 +14,7 @@ function rememberURI(event) {
 
 function reopenTab() {
   if (lastURI)
-    browserApp.addTab('http://www.baidu.com');
+    browserApp.addTab(lastURI);
 }
 
 function loadIntoWindow(window) {
@@ -29,6 +29,8 @@ function loadIntoWindow(window) {
 function unloadFromWindow(window) {
   if (!window)
     return;
+	nativeWindow.menu.remove(menuId);
+  browserApp.deck.removeEventListener("TabClose", rememberURI, false);
   // Remove any persistent UI elements
   // Perform any other cleanup
 }
