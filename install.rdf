@@ -4,10 +4,10 @@
     <Description about="urn:mozilla:install-manifest">
         <em:id>closeall@margaretleibovic.com</em:id>
         <em:type>2</em:type>
-        <em:name>Close All Tabs (mobile)</em:name>
+        <em:name>My First App</em:name>
         <em:version>1.0</em:version>
         <em:bootstrap>true</em:bootstrap>
-        <em:description>Adds a menu item to close all tabs.</em:description>
+        <em:description>test alert one message</em:description>
         <em:creator>Margaret Leibovic</em:creator>
 
         <!-- Mobile -->
