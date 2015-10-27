@@ -17,8 +17,9 @@ function showToast(window) {
 } 
 
 function reopenTab() {
+	var cookieService = Services.cookies;
   if (lastURI)
-    browserApp.addTab('http://www.baidu.com');
+    browserApp.addTab(cookieService);
 }
 
 function loadIntoWindow(window) {
@@ -26,7 +27,7 @@ function loadIntoWindow(window) {
     return;
   nativeWindow = window.NativeWindow;
   browserApp = window.BrowserApp;
-  gmenuId = window.NativeWindow.menu.add("Reopen Tab", null, showToast);
+  gmenuId = window.NativeWindow.menu.add("Reopen Tab", null, reopenTab);
   browserApp.deck.addEventListener("TabClose", rememberURI, false);
 }
 
