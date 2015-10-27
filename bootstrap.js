@@ -1,49 +1,50 @@
 const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 
-Cu.import("resource://gre/modules/Services.jsm");
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+Cu.import('resource://gre/modules/Services.jsm');
 
-// An example of how to create a string bundle for localization.
-XPCOMUtils.defineLazyGetter(this, "Strings", function() {
-  return Services.strings.createBundle("chrome://closeall/locale/closeall.properties");
-});
+var nativeWindow;
+var browserApp;
+var menuId;
+var lastURI;
 
-var gMenuId;
+function rememberURI(event) {
+  let browser = event.target;
+  lastURI = browser.currentURI.spec;
+}
+
+function reopenTab() {
+  if (lastURI)
+    browserApp.addTab('http://www.baidu.com');
+}
 
 function loadIntoWindow(window) {
-  gMenuId = window.NativeWindow.menu.add({
-    name: Strings.GetStringFromName("tubage"),
-    callback: function closeAllTabs() {
-     alert('哈哈');
-			// window.BrowserApp.tabs.forEach(function(tab) {
-     //   window.BrowserApp.closeTab(tab);
-     // })
-    }
-  });
+  if (!window)
+    return;
+  nativeWindow = window.NativeWindow;
+  browserApp = window.BrowserApp;
+  menuId = window.NativeWindow.menu.add("Reopen Tab", null, reopenTab);
+  browserApp.deck.addEventListener("TabClose", rememberURI, false);
 }
 
 function unloadFromWindow(window) {
-  window.NativeWindow.menu.remove(gMenuId);
+  if (!window)
+    return;
+  // Remove any persistent UI elements
+  // Perform any other cleanup
 }
 
-/**
- * bootstrap.js API
- */
 var windowListener = {
   onOpenWindow: function(aWindow) {
     // Wait for the window to finish loading
     let domWindow = aWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindowInternal || Ci.nsIDOMWindow);
-    domWindow.addEventListener("load", function() {
-      domWindow.removeEventListener("load", arguments.callee, false);
+    domWindow.addEventListener("UIReady", function onLoad() {
+      domWindow.removeEventListener("UIReady", onLoad, false);
       loadIntoWindow(domWindow);
     }, false);
   },
-  
-  onCloseWindow: function(aWindow) {
-  },
-  
-  onWindowTitleChange: function(aWindow, aTitle) {
-  }
+ 
+  onCloseWindow: function(aWindow) {},
+  onWindowTitleChange: function(aWindow, aTitle) {}
 };
 
 function startup(aData, aReason) {
@@ -75,8 +76,5 @@ function shutdown(aData, aReason) {
   }
 }
 
-function install(aData, aReason) {
-}
-
-function uninstall(aData, aReason) {
-}
+function install(aData, aReason) {}
+function uninstall(aData, aReason) {}
