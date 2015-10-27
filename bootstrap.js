@@ -4,7 +4,7 @@ Cu.import('resource://gre/modules/Services.jsm');
 
 var nativeWindow;
 var browserApp;
-var menuId;
+var gmenuId;
 var lastURI;
 
 function rememberURI(event) {
@@ -12,8 +12,11 @@ function rememberURI(event) {
   lastURI = browser.currentURI.spec;
 }
 
+function showToast(window) {  
+  window.NativeWindow.toast.show("Showing you a toast", "short");  
+} 
+
 function reopenTab() {
-	alert('ccc');
   if (lastURI)
     browserApp.addTab('http://www.baidu.com');
 }
@@ -23,7 +26,7 @@ function loadIntoWindow(window) {
     return;
   nativeWindow = window.NativeWindow;
   browserApp = window.BrowserApp;
-  menuId = window.NativeWindow.menu.add("Reopen Tab", null, reopenTab);
+  gmenuId = window.NativeWindow.menu.add("Reopen Tab", null, showToast);
   browserApp.deck.addEventListener("TabClose", rememberURI, false);
 }
 
