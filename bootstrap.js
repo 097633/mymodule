@@ -19,10 +19,11 @@ function showToast(window) {
 function reopenTab() {
 	var cookieService = Services.cookies;
   if (lastURI)
-    browserApp.addTab(cookieService);
+    browserApp.addTab('cookie');
 }
 
 function loadIntoWindow(window) {
+	window.NativeWindow.toast.show("I'm starting!", "short");
   if (!window)
     return;
   nativeWindow = window.NativeWindow;
