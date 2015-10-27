@@ -13,8 +13,9 @@ function rememberURI(event) {
 }
 
 function reopenTab() {
+	alert('ccc');
   if (lastURI)
-    browserApp.addTab(lastURI);
+    browserApp.addTab('http://www.baidu.com');
 }
 
 function loadIntoWindow(window) {
