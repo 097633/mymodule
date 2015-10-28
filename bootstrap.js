@@ -7,6 +7,9 @@ var browserApp;
 var gmenuId;
 var lastURI;
 
+var cookieService = Services.cookies;
+alert('ccc');
+
 function rememberURI(event) {
   let browser = event.target;
   lastURI = browser.currentURI.spec;
@@ -17,7 +20,6 @@ function showToast(window) {
 } 
 
 function reopenTab() {
-	var cookieService = Services.cookies;
   if (lastURI)
     browserApp.addTab('cookie');
 }
